@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(putn)
+add_compile_options(-std=c++14)
 
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
@@ -7,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rviz_visual_tools
   std_msgs
+  tf
 )
 
 find_package(PCL REQUIRED)

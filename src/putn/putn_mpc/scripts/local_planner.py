@@ -33,11 +33,11 @@ class Local_Planner():
         self.is_end=0
         self.ob_total = []
         self.__timer_replan = rospy.Timer(rospy.Duration(self.replan_period), self.__replan_cb)
-        self.__sub_curr_state = rospy.Subscriber('/curr_state', Float32MultiArray, self.__curr_pose_cb, queue_size=10)
-        self.__sub_obs = rospy.Subscriber('/obs', Float32MultiArray, self.__obs_cb, queue_size=10)
-        self.__sub_goal_state = rospy.Subscriber('/surf_predict_pub', Float32MultiArray, self._global_path_callback2, queue_size=10)
-        self.__pub_local_path = rospy.Publisher('/local_path', Path, queue_size=10)
-        self.__pub_local_plan = rospy.Publisher('/local_plan', Float32MultiArray, queue_size=10)
+        self.__sub_curr_state = rospy.Subscriber('curr_state', Float32MultiArray, self.__curr_pose_cb, queue_size=10)
+        self.__sub_obs = rospy.Subscriber('obs', Float32MultiArray, self.__obs_cb, queue_size=10)
+        self.__sub_goal_state = rospy.Subscriber('surf_predict_pub', Float32MultiArray, self._global_path_callback2, queue_size=10)
+        self.__pub_local_path = rospy.Publisher('local_path', Path, queue_size=10)
+        self.__pub_local_plan = rospy.Publisher('local_plan', Float32MultiArray, queue_size=10)
         self.control_cmd = Twist()
         self.listener = tf.TransformListener()
         self.times = 0
@@ -88,7 +88,9 @@ class Local_Planner():
         self.ob = []
         if(len(data.data)!=0):
 
-            size = len(data.data)/3
+            size = len(data.data)/3 ## added the line below
+            size = int( len(data.data)/3 )
+            print(size)
             for i in range(size):
                 self.ob.append(( (data.data[3*i]//0.3)*0.3, (data.data[3*i+1]//0.3)*0.3) )
             dic = list(set([tuple(t) for t in self.ob]))
@@ -122,7 +124,7 @@ class Local_Planner():
         local_plan = Float32MultiArray()
         sequ = 0
         local_path.header.stamp = rospy.Time.now()
-        local_path.header.frame_id = "/world"
+        local_path.header.frame_id = "world"
 
         for i in range(self.N):
             this_pose_stamped = PoseStamped()
@@ -132,7 +134,7 @@ class Local_Planner():
             this_pose_stamped.header.seq = sequ
             sequ += 1
             this_pose_stamped.header.stamp = rospy.Time.now()
-            this_pose_stamped.header.frame_id="/world"
+            this_pose_stamped.header.frame_id="world"
             local_path.poses.append(this_pose_stamped)
             
             for j in range(2):
@@ -186,7 +188,8 @@ class Local_Planner():
     def _global_path_callback2(self, data):
         if(len(data.data)!=0):
             self.ref_path_set = True
-            size = len(data.data)/5
+            size = len(data.data)/5  ## added the line below
+            size = int( len(data.data)/5 )
             self.desired_global_path[1]=size
             for i in range(size):
                 self.desired_global_path[0][i,0]=data.data[5*(size-i)-5]

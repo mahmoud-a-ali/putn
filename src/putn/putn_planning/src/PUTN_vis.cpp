@@ -49,7 +49,7 @@ void visWorld(World* world, Publisher* world_vis_pub)
   sensor_msgs::PointCloud2 map_vis;
   pcl::toROSMsg(cloud_vis, map_vis);
 
-  map_vis.header.frame_id = "/world";
+  map_vis.header.frame_id = "world";
   world_vis_pub->publish(map_vis);
 }
 
@@ -80,7 +80,7 @@ void visSurf(const vector<Node*>& solution, Publisher* surf_vis_pub)
   sensor_msgs::PointCloud2 map_vis;
   pcl::toROSMsg(surf_point, map_vis);
 
-  map_vis.header.frame_id = "/world";
+  map_vis.header.frame_id = "world";
   surf_vis_pub->publish(map_vis);
 }
 

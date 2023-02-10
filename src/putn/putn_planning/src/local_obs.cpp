@@ -69,14 +69,14 @@ void rcvVelodyneCallBack(const sensor_msgs::PointCloud2& velodyne_points)
     }
   }
 
-  listener_ptr->waitForTransform("/world", "/aft_mapped", ros::Time(0), ros::Duration(2.0));
+  listener_ptr->waitForTransform("world", "aft_mapped", ros::Time(0), ros::Duration(2.0));
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_tran(new pcl::PointCloud<pcl::PointXYZ>);
 
   std_msgs::Float32MultiArray obs_array;
   for (const auto& pt : cloud_filt->points)
   {
     geometry_msgs::PointStamped origin_point;
-    origin_point.header.frame_id = "/aft_mapped";
+    origin_point.header.frame_id = "aft_mapped";
     origin_point.header.stamp = ros::Time();
     origin_point.point.x = pt.x;
     origin_point.point.y = pt.y;
@@ -84,7 +84,7 @@ void rcvVelodyneCallBack(const sensor_msgs::PointCloud2& velodyne_points)
 
     geometry_msgs::PointStamped trans_point;
 
-    listener_ptr->transformPoint("/world", origin_point, trans_point);
+    listener_ptr->transformPoint("world", origin_point, trans_point);
 
     pcl::PointXYZ _pt;
     if (!(-1.2 < pt.x && pt.x < 0.4 && -0.4 < pt.y && pt.y < 0.4))
@@ -104,7 +104,7 @@ void rcvVelodyneCallBack(const sensor_msgs::PointCloud2& velodyne_points)
   sensor_msgs::PointCloud2 obs_vis;
   pcl::toROSMsg(*cloud_tran, obs_vis);
 
-  obs_vis.header.frame_id = "/world";
+  obs_vis.header.frame_id = "world";
   obs_pub.publish(obs_vis);
   obs_array_pub.publish(obs_array);
 }

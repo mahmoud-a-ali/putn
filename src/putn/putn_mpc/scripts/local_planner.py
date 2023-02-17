@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import rospy
 from std_msgs.msg import Bool, Float64, Float32MultiArray
 from geometry_msgs.msg import Pose, PoseArray, PoseStamped, Point, Twist
@@ -60,7 +60,7 @@ class Local_Planner():
             t_ob.action = t_ob.ADD
             t_ob.pose.position.x = self.ob[i][0]
             t_ob.pose.position.y = self.ob[i][1]
-            t_ob.pose.position.z=0.2
+            t_ob.pose.position.z=0.0
             t_ob.scale.x = 0.1
             t_ob.scale.y = 0.1
             t_ob.scale.z = 0.4

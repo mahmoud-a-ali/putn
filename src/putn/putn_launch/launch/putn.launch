@@ -12,7 +12,7 @@
 
 
   <node pkg="tf" type="static_transform_publisher" name="world_to_camera_init" args="0 0 0 0 0 0 /world /camera_init 10" /><!--10ms-->
-  <node pkg="tf" type="static_transform_publisher" name="camera_to_link" args="0 0 -0.4 0 0 0 /aft_mapped /base_link 10" />
+  <node pkg="tf" type="static_transform_publisher" name="camera_to_link" args="0 0 -0.25 0 0 0 /aft_mapped /base_link 10" />
 
   <node pkg="waypoint_generator" name="waypoint_generator" type="waypoint_generator">
       <remap from="~goal" to="/goal"/>
@@ -35,8 +35,8 @@
       <param name="map/local_x_u"       value="1.8"/>
       <param name="map/local_y_l"       value="-1.8"/>
       <param name="map/local_y_u"       value="1.8"/>
-      <param name="map/local_z_l"       value="-0.5"/>
-      <param name="map/local_z_u"       value="0.4"/>
+      <param name="map/local_z_l"       value="-0.25"/>
+      <param name="map/local_z_u"       value="0.5"/>
   </node>
 
   <node pkg="gpr" type="gpr_path" name="gpr_path" output="screen" required="true">
@@ -45,7 +45,8 @@
 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find putn_launch)/rviz_config/simulation.rviz" required="true"/>
 
-  <node name="local_planner" pkg="local_planner" type="local_planner.py" launch-prefix="gnome-terminal --title=local_planner -x"/>
-  <node name="controller" pkg="local_planner" type="controller.py" launch-prefix="gnome-terminal --title=controller -x"/>
+  <!-- gnome-terminal -->
+  <node name="local_planner" pkg="local_planner" type="local_planner.py" launch-prefix="gnome-terminal --title=local_planner --tab --" output="screen" />
+  <node name="controller" pkg="local_planner" type="controller.py" launch-prefix="gnome-terminal --title=controller --tab --" output="screen" />
 
 </launch>
